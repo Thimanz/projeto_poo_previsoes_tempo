@@ -16,6 +16,6 @@ public class Previsao {
 
     @Override
     public String toString() {
-        return String.format("data: %s\ttempMin: %f\ttempMax:%f", data, temperaturaMin, temperaturaMax);
+        return String.format("data: %s    Temp Min: %.1f    Temp Max: %.1f\n", data, temperaturaMin, temperaturaMax);
     }
 }
