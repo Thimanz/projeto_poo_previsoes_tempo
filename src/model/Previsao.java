@@ -13,9 +13,13 @@ public class Previsao {
     private final double temperaturaMax;
     private final String cidade;
     private final String data;
+ 
 
     @Override
     public String toString() {
         return String.format("data: %s    Temp Min: %.1f    Temp Max: %.1f\n", data, temperaturaMin, temperaturaMax);
     }
 }
+
+
+/// teste
