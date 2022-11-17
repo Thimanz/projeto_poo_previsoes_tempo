@@ -2,6 +2,7 @@ package service;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +15,16 @@ import model.Previsao;
 public class PrevisaoService {
     private HttpClient client = HttpClient.newBuilder().build();
 
-    public List <Previsao> obterPrevisoesWheaterMap(String url, String appid, String cidade) throws Exception{
-        url = String.format("%s?q=%s&appid=%s", url, cidade, appid);
+    public void armazenarPrevisaoNoHistoricoOraclaCloud(Previsao p) throws Exception{
+        JSONObject pJSON = new JSONObject();
+        pJSON.put("cidade", p.getCidade());
+        HttpRequest req = HttpRequest.newBuilder().POST(BodyPublishers.ofString(pJSON.toString()))
+        .header("Content-Type", "application/json")
+        .uri(URI.create("url oracle")).build();
+    }
+
+    public List <Previsao> obterPrevisoesWheaterMap(String url, String appid, String units, String cnt, String cidade) throws Exception{
+        url = String.format("%s?q=%s&cnt=%s&appid=%s&units=%s", url, cidade, cnt, appid, units);
         List <Previsao> previsoes = new ArrayList<>();
 
         //1. Construir um objeto que representa a requisicão
