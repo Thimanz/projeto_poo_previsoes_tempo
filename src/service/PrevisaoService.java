@@ -15,12 +15,30 @@ import model.Previsao;
 public class PrevisaoService {
     private HttpClient client = HttpClient.newBuilder().build();
 
-    public void armazenarPrevisaoNoHistoricoOraclaCloud(Previsao p) throws Exception{
+    public void armazenarPrevisaoNoHistoricoOraclaCloud(Previsao p, String url) throws Exception{
         JSONObject pJSON = new JSONObject();
         pJSON.put("cidade", p.getCidade());
         HttpRequest req = HttpRequest.newBuilder().POST(BodyPublishers.ofString(pJSON.toString()))
         .header("Content-Type", "application/json")
-        .uri(URI.create("url oracle")).build();
+        .uri(URI.create(url)).build();
+        client.send(req, BodyHandlers.ofString());
+    }
+
+    public String imprimirPrevisoesOracleCloud (String url) throws Exception{
+        HttpRequest req = HttpRequest.newBuilder()
+        .uri(URI.create(url))
+        .build();
+        var res = client.send(req, BodyHandlers.ofString());
+        JSONObject raiz = new JSONObject(res.body());
+        JSONArray items = raiz.getJSONArray("items");
+        String historico = "";
+        for (int i = 0; i < items.length(); i++){
+            JSONObject objeto = items.getJSONObject(i);
+            String cidade = objeto.getString("cidade");
+            String data_previsao = objeto.getString("data_previsao");
+            historico += cidade + " - " + data_previsao + "\n";
+        }
+        return historico;
     }
 
     public List <Previsao> obterPrevisoesWheaterMap(String url, String appid, String units, String cnt, String cidade) throws Exception{
@@ -41,7 +59,7 @@ public class PrevisaoService {
             double temp_min = main.getDouble("temp_min");
             double temp_max = main.getDouble("temp_max");
             String dt_txt = previsaoJSON.getString("dt_txt");
-            Previsao p = new Previsao(0, temp_min, temp_max, cidade, dt_txt);
+            Previsao p = new Previsao(temp_min, temp_max, cidade, dt_txt);
             previsoes.add(p);
         }
         return previsoes;

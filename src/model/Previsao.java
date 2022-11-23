@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class Previsao {
-    private final int codigo;
     private final double temperaturaMin;
     private final double temperaturaMax;
     @Getter
