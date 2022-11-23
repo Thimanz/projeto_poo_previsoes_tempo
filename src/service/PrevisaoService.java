@@ -24,7 +24,7 @@ public class PrevisaoService {
         client.send(req, BodyHandlers.ofString());
     }
 
-    public String imprimirPrevisoesOracleCloud (String url) throws Exception{
+    public String getPrevisoesOracleCloud (String url) throws Exception{
         HttpRequest req = HttpRequest.newBuilder()
         .uri(URI.create(url))
         .build();
@@ -52,6 +52,8 @@ public class PrevisaoService {
         var res = client.send(req, BodyHandlers.ofString());
 
         JSONObject raiz = new JSONObject(res.body());
+        JSONObject city = raiz.getJSONObject("city");
+        cidade = city.getString("name");
         JSONArray list = raiz.getJSONArray("list");
         for (int i = 0; i< list.length(); i++){
             JSONObject previsaoJSON = list.getJSONObject(i);

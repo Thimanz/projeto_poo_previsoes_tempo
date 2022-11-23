@@ -29,17 +29,17 @@ public class App {
             menu = JOptionPane.showOptionDialog(null, "Escolha o que deseja fazer", "Menu", 0, 3, null, opcoes, opcoes[0]);
             if (menu == 0){
                 String cidade = JOptionPane.showInputDialog("Digite uma cidade para saber suas previsoes");
-                cidade = cidade.replaceAll("[^a-zA-Z]", "");
+                cidade = cidade.replaceAll("\\s", "+").replaceAll("[^a-zA-Z+]", "");
                 List <Previsao> previsoes = service.obterPrevisoesWheaterMap(WHEATER_MAP_BASEURL, WHEATER_MAP_APPID, WEATHER_MAP_UNITS, WEATHER_MAP_CNT, cidade);
                 service.armazenarPrevisaoNoHistoricoOraclaCloud(previsoes.get(0), URL_ORACLE);
                 String mensagem = "";
                 for (int i = 0; i < previsoes.size(); i++){
                     mensagem += previsoes.get(i);
                 }
-                JOptionPane.showMessageDialog(null, mensagem, "Previsões de 3 em 3 horas", 1);
+                JOptionPane.showMessageDialog(null, mensagem, previsoes.get(0).getCidade(), 1);
             }
             else if (menu == 1){
-                JOptionPane.showMessageDialog(null, service.imprimirPrevisoesOracleCloud(URL_ORACLE), "Historico de previsões", 1);
+                JOptionPane.showMessageDialog(null, service.getPrevisoesOracleCloud(URL_ORACLE), "Histórico de previsões", 1);
             }
         }while(menu != 2);
     }
