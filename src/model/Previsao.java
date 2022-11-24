@@ -10,10 +10,9 @@ public class Previsao {
     @Getter
     private final String cidade;
     private final String data;
- 
 
     @Override
     public String toString() {
-        return String.format("data: %s    Temp Min: %.1f    Temp Max: %.1f\n", data, temperaturaMin, temperaturaMax);
+        return String.format("Data: %s    Temp Min: %.1f    Temp Max: %.1f\n", data, temperaturaMin, temperaturaMax);
     }
 }
